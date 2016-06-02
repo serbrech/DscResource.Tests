@@ -275,7 +275,18 @@ function Install-ModuleFromPowerShellGallery {
             -TestType Integration
             
         This command will initialize the test enviroment for Integration testing
-        the MSFT_xFirewall DSC resource in the xNetworking DSC module.    
+        the MSFT_xFirewall DSC resource in the xNetworking DSC module.
+        
+    .EXAMPLE
+        $TestEnvironment = Inialize-TestEnvironment `
+            -DSCModuleName 'xModule' `
+            -DSCResourceName 'MSFT_xResource' `
+            -TestType Integration `
+            -ResourceType Class
+            
+        This command will initialize the test enviroment for Integration testing
+        the DSC resource in the xModule DSC module
+        when the module with a Powershell class (different module folder structure)
 #>
 function Initialize-TestEnvironment
 {
@@ -293,7 +304,12 @@ function Initialize-TestEnvironment
 
         [Parameter(Mandatory=$true)]
         [ValidateSet('Unit','Integration')]
-        [String] $TestType
+        [String] $TestType,
+
+        [Parameter(Mandatory=$true)]
+        [ValidateSet('Mof','Class')]
+        [String] $ResourceType = 'Mof'
+
     )
     
     Write-Host -Object (`
@@ -305,7 +321,14 @@ function Initialize-TestEnvironment
     }
     else
     {
-        [String] $RelativeModulePath = "$DSCModuleName.psd1"
+        if ($ResourceType -eq 'Mof')
+        {
+            [String] $RelativeModulePath = "$DSCModuleName.psd1"
+        }
+        else
+        {
+            [String] $RelativeModulePath = "DSCResources\$DSCResourceName\$DSCModuleName.psd1"
+        }
     }
 
     # Unique Temp Working Folder - always gets removed on completion
