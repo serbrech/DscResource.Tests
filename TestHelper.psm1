@@ -344,8 +344,7 @@ function Initialize-TestEnvironment
     # The folder where this module is found
     [String] $moduleRoot = Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
     
-    # The folder that all tests will find this module in
-    [string] $modulesFolder = Split-Path -Parent $moduleRoot
+    
         
     # Import the Module
     $Splat = @{
@@ -355,6 +354,9 @@ function Initialize-TestEnvironment
         ErrorAction = 'Stop'
     }
     $DSCModuleFile = Get-Item -Path (Join-Path @Splat)
+
+    # The folder that all tests will find this module in
+    [string] $modulesFolder = Split-Path -Parent (Split-Path -Parent $DSCModuleFile)
     
     # Remove all copies of the module from memory so an old one is not used.
     if (Get-Module -Name $DSCModuleFile.BaseName -All)
