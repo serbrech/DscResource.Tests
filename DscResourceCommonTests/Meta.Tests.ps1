@@ -26,7 +26,8 @@ Import-Module -Name (Join-Path -Path $TestHelper -ChildPath 'TestHelper.psm1') -
 $ErrorActionPreference = 'stop'
 Set-StrictMode -Version latest
 
-$RepoRoot = (Resolve-Path $PSScriptRoot\..).Path
+#$RepoRoot = (Resolve-Path $PSScriptRoot\..).Path
+$RepoRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 $PSVersion = $PSVersionTable.PSVersion
 
 # Install and/or Import xDSCResourceDesigner Module
