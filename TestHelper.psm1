@@ -239,7 +239,7 @@ function Install-ModuleFromPowerShellGallery {
            for testing as well as storing the backed up settings.
            
         The above changes are reverted by calling the Restore-TestEnvironment
-        function. This includes deleteing the temporary working folder.
+        function. This includes deleting the temporary working folder.
     
     .PARAMETER DSCModuleName
         The name of the DSC Module containing the resource that the tests will be
@@ -253,6 +253,11 @@ function Install-ModuleFromPowerShellGallery {
         Specifies the type of tests that are being intialized. It can be:
         Unit: Initialize for running Unit tests on a DSC resource. Default.
         Integration: Initialize for running Integration tests on a DSC resource.
+    
+    .PARAMETER ResourceType
+        Specifies if the DscResource under test is mof-based or class-based. It can be:
+        Mof: The test initialization assumes a Mof-based DscResource folder structure. Default.
+        Class: The test initialization assumes a Class-based DscResource folder structure.
 
     .OUTPUT
         Returns a test environment object which must be passed to the
@@ -286,7 +291,7 @@ function Install-ModuleFromPowerShellGallery {
             
         This command will initialize the test enviroment for Integration testing
         the DSC resource in the xModule DSC module
-        when the module with a Powershell class (different module folder structure)
+        when the module with a Powershell class (class based module folder structure)
 #>
 function Initialize-TestEnvironment
 {
@@ -306,7 +311,6 @@ function Initialize-TestEnvironment
         [ValidateSet('Unit','Integration')]
         [String] $TestType,
 
-        [Parameter(Mandatory=$true)]
         [ValidateSet('Mof','Class')]
         [String] $ResourceType = 'Mof'
 
